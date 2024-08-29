@@ -12,7 +12,7 @@ const {authenticate} = require("./middleware/authentication.middleware")
 
 app.use(cors());
 
-// app.use("/users",userRouter)
+app.use("/users",userRouter)
 // app.use(authenticate)
 
 app.use("/tasks",taskRouter)

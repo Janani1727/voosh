@@ -3,9 +3,9 @@ const { UserModel } = require("../model/user.model")
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt');
 
-const userRoute = express.Router()
+const userRouter = express.Router()
 
-userRoute.post("/register", async (req, res) => {
+userRouter.post("/register", async (req, res) => {
     const { username, email, password} = req.body
     try {
         const user = await UserModel.find({ email })
@@ -29,27 +29,27 @@ userRoute.post("/register", async (req, res) => {
     }
 })
 
-// userRoute.post("/login", async (req, res) => {
-//     const { email, password } = req.body
-//     try {
-//         const user = await userModel.find({ email })
-//         if (user.length > 0) {
-//             bcrypt.compare(password, user[0].password, (err, result) => {
-//                 if (result) {
-//                     const token = jwt.sign({ userID: user[0]._id }, "onemg")
-//                     res.send({ "msg": "Login sucessful", token, username: user[0].username, type: user[0].type })
-//                 } else {
-//                     res.send({ "msg": "Something went wrong" })
-//                 }
-//             });
-//         } else {
-//             res.send({ "msg": "Wrong crediential" })
-//         }
-//     } catch (err) {
-//         res.send({ "msg": "Something Wrong" })
-//     }
-// })
+userRouter.post("/login", async (req, res) => {
+    const { email, password } = req.body
+    try {
+        const user = await UserModel.find({ email })
+        if (user.length > 0) {
+            bcrypt.compare(password, user[0].password, (err, result) => {
+                if (result) {
+                    const token = jwt.sign({ userID: user[0]._id }, "onemg")
+                    res.send({ "msg": "Login sucessful", token, username: user[0].username, type: user[0].type })
+                } else {
+                    res.send({ "msg": "Something went wrong" })
+                }
+            });
+        } else {
+            res.send({ "msg": "Wrong crediential" })
+        }
+    } catch (err) {
+        res.send({ "msg": "Something Wrong" })
+    }
+})
 
 module.exports = {
-    userRoute
+    userRouter
 }
